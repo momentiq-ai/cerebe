@@ -134,5 +134,5 @@ Cerebe is a managed platform. SDKs are MIT licensed.
 ---
 
 <p align="center">
-  Built by <a href="https://momentiq.ai">MomentiQ</a>
+  Built by <a href="https://momentiq.ai">momentiq ai</a>
 </p>
