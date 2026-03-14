@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Documentation
+    url: https://cerebe.ai/docs
+    about: Check the docs — your question might already be answered.
+  - name: Email Support
+    url: mailto:support@cerebe.ai
+    about: For account or billing questions, email us directly.

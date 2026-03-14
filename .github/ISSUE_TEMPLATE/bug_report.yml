@@ -1,0 +1,61 @@
+name: Bug Report
+description: Report an issue with the Cerebe API or SDKs
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Which part of Cerebe is affected?
+      options:
+        - API (api.cerebe.ai)
+        - Python SDK (cerebe)
+        - TypeScript SDK (@cerebe/sdk)
+        - Dashboard (cerebe.ai/dashboard)
+        - Documentation (cerebe.ai/docs)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+      placeholder: "When I call client.memory.search(...), I get..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Minimal code or steps to reproduce the issue.
+      render: python
+      placeholder: |
+        from cerebe import AsyncCerebe
+        client = AsyncCerebe(api_key="ck_test_...")
+        # ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: input
+    id: sdk-version
+    attributes:
+      label: SDK version
+      description: "Output of `pip show cerebe` or `npm list @cerebe/sdk`"
+      placeholder: "0.3.1"
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Error messages, request IDs, screenshots, etc.
