@@ -89,9 +89,17 @@ def test_embed_and_list(client):
 
 
 def test_search_finds_embedded(client):
-    """Searching for a unique phrase returns the doc containing it."""
+    """Searching for a unique phrase returns the doc containing it.
+
+    Scopes the search to the current test session via source_pattern so that
+    orphan vectors left behind by a previous run (e.g. interrupted cleanup)
+    don't interfere. Retries a few times to tolerate the brief embed→index
+    propagation delay.
+    """
+    import time
+
     source = _src("search_finds.md")
-    marker = "zaphaelith anomaly protocol"  # a phrase that won't appear elsewhere
+    marker = f"zaphaelith anomaly protocol {SESSION_ID}"
     client.rag.embed(
         source=source,
         content=f"This document describes the {marker} in detail.",
@@ -99,10 +107,18 @@ def test_search_finds_embedded(client):
     )
     client.track(source)
 
-    resp = client.rag.search(marker, k=5)
-    results = (getattr(resp, "data", {}) or {}).get("results") or []
-    sources = [r.get("source") for r in results]
-    assert source in sources, f"expected {source} in search results; got {sources}"
+    session_pattern = f"{SESSION_ID}/"  # source_pattern is a prefix match, not a glob
+    sources: list[str] = []
+    for _ in range(5):
+        resp = client.rag.search(marker, k=5, source_pattern=session_pattern)
+        results = (getattr(resp, "data", {}) or {}).get("results") or []
+        sources = [r.get("source") for r in results]
+        if source in sources:
+            return
+        time.sleep(0.5)
+    raise AssertionError(
+        f"expected {source} in search results within 2.5s; got {sources}"
+    )
 
 
 def test_hybrid_search_returns_score_breakdown(client):
