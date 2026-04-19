@@ -1,0 +1,69 @@
+name: examples-smoke
+
+on:
+  schedule:
+    # 09:00 UTC every Monday — catch SDK drift before the work week starts.
+    - cron: "0 9 * * MON"
+  pull_request:
+    paths:
+      - "examples/**"
+      - ".github/workflows/examples-smoke.yml"
+  push:
+    branches: [main]
+    paths:
+      - "examples/**"
+      - ".github/workflows/examples-smoke.yml"
+  workflow_dispatch: {}
+
+concurrency:
+  group: examples-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: ${{ matrix.os }} · python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.11", "3.12", "3.13"]
+    env:
+      CEREBE_API_KEY: ${{ secrets.CEREBE_API_KEY }}
+      CEREBE_BASE_URL: https://api.cerebe.ai
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run smoke tests for every Python example
+        shell: bash
+        run: |
+          set -euo pipefail
+          failed=0
+          for dir in examples/*/python; do
+            [ -f "$dir/Makefile" ] || continue
+            echo "::group::$dir"
+            (
+              cd "$dir"
+              # Upgrade the SDK to the current latest — this is the drift check.
+              uv sync --extra dev --upgrade-package cerebe
+              make test
+            ) || failed=1
+            echo "::endgroup::"
+          done
+          exit $failed
+
+      - name: Upload pytest logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-logs-${{ matrix.os }}-py${{ matrix.python-version }}
+          path: |
+            examples/**/.pytest_cache/**
+            examples/**/*.log
+          if-no-files-found: ignore
