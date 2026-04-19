@@ -30,6 +30,14 @@ Cerebe provides cognitive infrastructure as an API:
 - **Agent Tooling** — Execution traces, cognitive profiling, and MCP server for Claude Code and Cursor.
 - **LLM Router** — OpenAI-compatible chat with automatic cognitive context enrichment.
 
+## Examples
+
+Runnable examples live under [`examples/`](./examples/). Each is a stand-alone, clone-and-run walkthrough with its own README, dependency manifest, and live-API smoke tests — no platform-side setup required.
+
+- [**RAG**](./examples/rag/) — embed documents, run semantic + hybrid search, and manage a Cerebe-backed knowledge base with `client.rag`.
+
+See [`examples/README.md`](./examples/README.md) for the full index and contribution conventions.
+
 ## Quick Start
 
 ### Install
