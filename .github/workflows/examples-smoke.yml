@@ -31,6 +31,10 @@ jobs:
     env:
       CEREBE_API_KEY: ${{ secrets.CEREBE_API_KEY }}
       CEREBE_BASE_URL: https://api.cerebe.ai
+      # Force uv to use the matrix-specified Python for sync + run.
+      # Without this, uv picks its default (newest installed) and the
+      # Python-version matrix becomes cosmetic.
+      UV_PYTHON: ${{ matrix.python-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
