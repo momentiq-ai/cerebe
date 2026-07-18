@@ -1,0 +1,48 @@
+Cerebe Software License (Free to Use — Proprietary, Closed Source)
+
+Copyright 2026 Momentiq AI. All rights reserved.
+
+This repository is the public distribution front door for Cerebe. The compiled
+`cerebe` command-line tool distributed from this repository (the "Software") is
+made available free of charge under the terms below. The Software's source code
+is proprietary and is not published under this or any other license.
+
+1. Grant. Subject to these terms, Momentiq AI grants you a worldwide,
+   royalty-free, non-exclusive, non-transferable license to download, install,
+   and use the Software for any lawful purpose, including commercial use, at no
+   charge.
+
+2. Reservation of rights. The Software is licensed, not sold. Momentiq AI and
+   its licensors retain all right, title, and interest in and to the Software,
+   including all intellectual property rights. No rights are granted except as
+   expressly stated here.
+
+3. Restrictions. You may not: (a) copy, publish, or redistribute the Software's
+   source code (it is not provided); (b) decompile, disassemble, reverse
+   engineer, or otherwise attempt to derive the source code or underlying
+   algorithms of the Software, except to the extent this restriction is
+   prohibited by applicable law; (c) sell, sublicense, rent, or offer the
+   Software itself as a hosted or managed service to third parties; or
+   (d) remove or alter any proprietary notices.
+
+4. Paid services. Cerebe Cloud and other hosted backend services are separate
+   commercial offerings governed by their own agreement; nothing here grants
+   rights to those services.
+
+5. Other components. Portions of the Cerebe stack are distributed under their
+   own separate license terms (for example, the Cerebe Software Development Kits
+   published to PyPI and npm are provided under the MIT License). Those terms
+   govern those components; this license governs the `cerebe` tool distributed
+   from this repository.
+
+6. No warranty. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+
+7. Limitation of liability. TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT
+   SHALL MOMENTIQ AI BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY,
+   WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF,
+   OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+
+Questions: legal@cerebe.ai
