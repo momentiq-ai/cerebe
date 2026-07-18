@@ -16,8 +16,11 @@ body:
         - LLM / Chat API
         - Python SDK
         - TypeScript SDK
+        - cerebe CLI
+        - Cerebe Cloud
         - Dashboard
         - Documentation
+        - Examples
         - Other
     validations:
       required: true

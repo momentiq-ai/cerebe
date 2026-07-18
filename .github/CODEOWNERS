@@ -1,0 +1,3 @@
+# Cerebe front-door — default owners.
+# Every PR requests review from these owners unless a more specific rule matches.
+* @alien8d @SJBarras

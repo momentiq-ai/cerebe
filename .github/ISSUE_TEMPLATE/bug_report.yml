@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report an issue with the Cerebe API or SDKs
+description: Report an issue with a Cerebe product, API, or SDK
 title: "[Bug]: "
 labels: ["bug"]
 body:
@@ -12,8 +12,11 @@ body:
         - API (api.cerebe.ai)
         - Python SDK (cerebe)
         - TypeScript SDK (@cerebe/sdk)
+        - cerebe CLI
+        - Cerebe Cloud
         - Dashboard (cerebe.ai/dashboard)
         - Documentation (cerebe.ai/docs)
+        - Examples
     validations:
       required: true
 
@@ -31,11 +34,9 @@ body:
     attributes:
       label: Steps to reproduce
       description: Minimal code or steps to reproduce the issue.
-      render: python
+      render: shell
       placeholder: |
-        from cerebe import AsyncCerebe
-        client = AsyncCerebe(api_key="ck_test_...")
-        # ...
+        # code, CLI invocation, or API request that reproduces the issue
     validations:
       required: true
 
@@ -48,11 +49,11 @@ body:
       required: true
 
   - type: input
-    id: sdk-version
+    id: version
     attributes:
-      label: SDK version
-      description: "Output of `pip show cerebe` or `npm list @cerebe/sdk`"
-      placeholder: "0.3.1"
+      label: Version
+      description: "SDK version — e.g. output of `pip show cerebe` or `npm list @cerebe/sdk`"
+      placeholder: "0.4.2"
 
   - type: textarea
     id: context
