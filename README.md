@@ -5,42 +5,62 @@
 <h1 align="center">Cerebe</h1>
 
 <p align="center">
-  <strong>Cognitive services platform for AI applications.</strong><br/>
-  Memory, knowledge graphs, and meta-learning — through a simple API.
+  <strong>The AI-native software company — scaffold, plan, build, and ship, on one cognitive stack.</strong><br/>
+  Cerebe is the house brand for the whole family: the build lifecycle and the cognitive infrastructure it runs on.
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@cerebe/sdk"><img src="https://img.shields.io/npm/v/@cerebe/sdk?label=npm&color=blue" alt="npm" /></a>
-  <a href="https://pypi.org/project/cerebe/"><img src="https://img.shields.io/pypi/v/cerebe?color=blue" alt="PyPI" /></a>
+  <a href="https://cerebe.ai"><img src="https://img.shields.io/badge/site-cerebe.ai-black" alt="cerebe.ai" /></a>
   <a href="https://cerebe.ai/docs"><img src="https://img.shields.io/badge/docs-cerebe.ai-green" alt="Docs" /></a>
-  <a href="https://cerebe.ai/llms.txt"><img src="https://img.shields.io/badge/llms.txt-available-purple" alt="llms.txt" /></a>
+  <a href="https://www.npmjs.com/package/@cerebe/sdk"><img src="https://img.shields.io/npm/v/@cerebe/sdk?label=%40cerebe%2Fsdk&color=blue" alt="npm" /></a>
+  <a href="https://pypi.org/project/cerebe/"><img src="https://img.shields.io/pypi/v/cerebe?color=blue" alt="PyPI" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/CLI-free%20to%20use-brightgreen" alt="Free to use" /></a>
 </p>
 
 ---
 
 ## What is Cerebe?
 
-Most AI applications are stateless — every conversation starts from scratch. Cerebe changes that.
+Cerebe is one brand over an AI-native software company. It spans the arc of building
+software — scaffold a project, plan the change, build and ship it behind safety gates —
+and the cognitive infrastructure that arc runs on. The name is meant to work the way
+Docker's does: the bare word for the free tool, a modifier for everything else.
 
-Cerebe provides cognitive infrastructure as an API:
+**What you can use today:** Cerebe's **cognitive services** — a hosted API with Python
+and TypeScript SDKs ([quick start below](#quick-start--the-cognitive-api)). The **build
+lifecycle** tooling is consolidating under the Cerebe brand now; this repo is its front
+door as it lands. Follow [cerebe.ai](https://cerebe.ai) for availability.
 
-- **Memory Fabric** — Hybrid vector + graph memory that persists across sessions. 9 memory types including semantic, episodic, procedural, and working memory with TTL.
-- **Knowledge Graph** — Temporal knowledge that evolves with full provenance. Ingest, query, traverse, and visualize.
-- **Meta-Learning** — PLRE (Perception, Learning, Reasoning, Expression) framework that understands how users learn and adapts.
-- **Agent Tooling** — Execution traces, cognitive profiling, and MCP server for Claude Code and Cursor.
-- **LLM Router** — OpenAI-compatible chat with automatic cognitive context enrichment.
+### The build lifecycle (consolidating under Cerebe)
 
-## Examples
+The build lifecycle will span three stages:
 
-Runnable examples live under [`examples/`](./examples/). Each is a stand-alone, clone-and-run walkthrough with its own README, dependency manifest, and live-API smoke tests — no platform-side setup required.
+| Stage | What it will be |
+|---|---|
+| **Cerebe Blueprint** | Scaffolds a complete AI-native project (API + web + deploy), pre-wired to the Cerebe stack on commit one. |
+| **Cerebe Plan** | Turns intent into an agreed, proof-bound plan — brainstorming, specs, verifiable objectives — before code is written. |
+| **Cerebe Factory** | The autonomous code factory: agents implement, a quorum of rival AI critics reviews every change, and deterministic gates bind evidence to each commit before it ships. |
 
-- [**RAG**](./examples/rag/) — embed documents, run semantic + hybrid search, and manage a Cerebe-backed knowledge base with `client.rag`.
+The model is a free tool over a paid backend: run the lifecycle locally with the
+**free-to-use `cerebe`** CLI, or hosted with **Cerebe Cloud** — the paid backend where
+fleet review, compliance evidence, and dashboards live. (Both are planned as the tooling
+consolidates here; the CLI is free to use, not open source.)
 
-See [`examples/README.md`](./examples/README.md) for the full index and contribution conventions.
+### The cognitive infrastructure
 
-## Quick Start
+The lifecycle — and your own AI applications — rest on Cerebe's cognitive services,
+available today through one API and SDK:
 
-### Install
+| Service | What it does |
+|---|---|
+| **Cerebe Memory** | Hybrid vector + graph memory that persists across sessions — semantic, episodic, procedural, and working memory with consolidation and decay. |
+| **Cerebe Knowledge** | Temporal knowledge graphs (ingest, query, traverse, point-in-time) and retrieval (RAG + hybrid search) — behind one client. |
+| **Cerebe Models** | Capability-based LLM routing — request a model by capability and cost tier, not by hardcoded name. |
+| **Cerebe Meta-Learning** | The PLRE loop and cognitive-profile store — pattern analysis across domains, learner state, and phase transitions. |
+
+## Quick start — the cognitive API
+
+The cognitive services ship today as a hosted API with Python and TypeScript SDKs.
 
 ```bash
 # Python
@@ -49,8 +69,6 @@ pip install cerebe
 # TypeScript / Node.js
 npm install @cerebe/sdk
 ```
-
-### Store and Search Memory
 
 ```python
 from cerebe import AsyncCerebe
@@ -93,7 +111,18 @@ const results = await client.memory.search({
 })
 ```
 
-## API Overview
+Get an API key by following the
+[quickstart](https://cerebe.ai/docs/getting-started/quickstart). Keys use the format
+`ck_live_...` for production and `ck_test_...` for testing.
+
+Runnable, clone-and-run walkthroughs live under [`examples/`](./examples/).
+
+> **On "dark factory":** Cerebe Factory (above) will deliver what the industry calls a
+> *dark factory* — a software pipeline that runs lights-out, autonomously, behind
+> deterministic safety gates. We use the term as a description of the capability, not as
+> a product name.
+
+## API overview
 
 | Domain | Endpoints | Description |
 |--------|-----------|-------------|
@@ -104,43 +133,39 @@ const results = await client.memory.search({
 | **LLM** | `chat` | OpenAI-compatible chat with cognitive context |
 | **Storage** | `upload`, `retrieve` | Object storage for files and media |
 
+## For AI agents
+
+Cerebe provides machine-readable documentation for AI tools:
+
+- **`/llms.txt`** — structured index of all documentation pages
+- **`/llms-full.txt`** — complete documentation content in markdown
+
+If you're building with Claude Code, Cursor, or other AI-assisted tools, these
+endpoints let your tools understand the full Cerebe API surface automatically.
+
 ## Resources
 
 | Resource | Link |
 |----------|------|
+| Site | [cerebe.ai](https://cerebe.ai) |
 | Documentation | [cerebe.ai/docs](https://cerebe.ai/docs) |
 | Quickstart | [cerebe.ai/docs/getting-started/quickstart](https://cerebe.ai/docs/getting-started/quickstart) |
 | Python SDK | [pypi.org/project/cerebe](https://pypi.org/project/cerebe/) |
 | TypeScript SDK | [npmjs.com/package/@cerebe/sdk](https://www.npmjs.com/package/@cerebe/sdk) |
-| Dashboard | [cerebe.ai/dashboard](https://cerebe.ai/dashboard) |
+| Sign in | [cerebe.ai/sign-in](https://cerebe.ai/sign-in) |
 | AI-readable docs | [cerebe.ai/llms.txt](https://cerebe.ai/llms.txt) |
-
-## For AI Agents
-
-Cerebe provides machine-readable documentation for AI tools:
-
-- **`/llms.txt`** — Structured index of all documentation pages
-- **`/llms-full.txt`** — Complete documentation content in markdown
-
-If you're building with Claude Code, Cursor, or other AI-assisted tools, these endpoints let your tools understand the full Cerebe API surface automatically.
-
-## Authentication
-
-Get your API key from the [Cerebe Dashboard](https://cerebe.ai/dashboard/keys). Keys use the format `ck_live_...` for production and `ck_test_...` for testing.
-
-```bash
-curl https://api.cerebe.ai/api/v1/memory/search \
-  -H "X-API-Key: ck_live_your_key" \
-  -H "Content-Type: application/json" \
-  -d '{"query": "user preferences", "entity_id": "user_123"}'
-```
 
 ## License
 
-Cerebe is a managed platform. SDKs are MIT licensed.
+The `cerebe` CLI is **free to use** under the [Cerebe Software License](./LICENSE) — free
+for any use, including commercial, but not open source (the source is proprietary).
+**Cerebe Cloud** is a managed commercial service under its own agreement. The Python and
+TypeScript SDKs are published separately under the MIT License.
+
+Cerebe is operated by Momentiq AI.
 
 ---
 
 <p align="center">
-  Built by <a href="https://momentiq.ai">momentiq ai</a>
+  <a href="https://cerebe.ai">cerebe.ai</a>
 </p>
