@@ -1,7 +1,7 @@
 #!/bin/sh
 # Cerebe / Dark Factory CLI installer — downloads the released binaries from
 # momentiq-ai/cerebe GitHub Releases, verifies their SHA256 checksums, and
-# installs `dark-factory` + `cyclone` onto PATH. POSIX sh; macOS + Linux.
+# installs `cerebe` + `cyclone` onto PATH. POSIX sh; macOS + Linux.
 #
 #   curl -fsSL https://raw.githubusercontent.com/momentiq-ai/cerebe/main/install.sh | sh
 #
@@ -12,7 +12,7 @@
 set -eu
 
 REPO="momentiq-ai/cerebe"
-BINARIES="dark-factory cyclone"
+BINARIES="cerebe cyclone"
 VERSION="${CEREBE_VERSION:-}"
 
 log()  { printf '  %s\n' "$*"; }
@@ -47,7 +47,7 @@ if [ -z "$VERSION" ]; then
   [ -n "$VERSION" ] || err "could not resolve the latest release version from GitHub"
 fi
 BASE="https://github.com/${REPO}/releases/download/v${VERSION}"
-log "Installing Dark Factory CLI v${VERSION} (${TARGET}) from ${REPO} Releases"
+log "Installing Cerebe CLI v${VERSION} (${TARGET}) from ${REPO} Releases"
 
 # --- install dir (writable, on PATH) --------------------------------------
 # An explicit CEREBE_INSTALL_DIR is honored (created if needed). Only the DEFAULT
@@ -82,5 +82,5 @@ for bin in $BINARIES; do
 done
 
 printf '\nInstalled: %s → %s\n' "$BINARIES" "$DIR"
-printf 'Verify:    dark-factory --version   (expect v%s)\n' "$VERSION"
+printf 'Verify:    cerebe --version   (expect v%s)\n' "$VERSION"
 case ":$PATH:" in *":$DIR:"*) : ;; *) printf 'PATH:      add %s to your PATH\n' "$DIR";; esac
