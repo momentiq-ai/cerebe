@@ -1,21 +1,25 @@
 # Contributing to Cerebe
 
 Thanks for your interest in Cerebe. This repository is the public front door for the
-Cerebe family — the build lifecycle (Cerebe Blueprint, Cerebe Plan, Cerebe Factory) and
-the cognitive infrastructure it rests on (Cerebe Memory, Cerebe Knowledge, Cerebe Models,
+Cerebe family — the build lifecycle (Cerebe Blueprint, Cerebe Factory) and the
+cognitive infrastructure it rests on (Cerebe Memory, Cerebe Knowledge, Cerebe Models,
 Cerebe Meta-Learning). What lives *here* is the public-facing surface: examples, the
-front-door docs,
-and — as it consolidates — the free-to-use `cerebe` CLI and its distribution. (The
-`cerebe` CLI is free to use but not open source; the SDKs are MIT — see the README.)
+front-door docs, `install.sh`, and the compiled `cerebe` + `cyclone` binaries published
+to [Releases](https://github.com/momentiq-ai/cerebe/releases). (The CLIs are free to use
+but not open source; the SDKs are MIT — see the README.)
 
 ## Where things live
 
+- **Factory CLIs** (`cerebe`, `cyclone`) — compiled binaries on
+  [Releases](https://github.com/momentiq-ai/cerebe/releases). Install with
+  [`install.sh`](./install.sh). The source is proprietary; report CLI issues here.
 - **Cognitive API + SDKs** (`cerebe` on PyPI, `@cerebe/sdk` on npm) — the runnable
-  surface. Report SDK/API issues here via the issue templates.
+  cognitive surface. Report SDK/API issues here via the issue templates.
 - **Examples** ([`examples/`](./examples/)) — clone-and-run walkthroughs. New examples
   are welcome; see [`examples/README.md`](./examples/README.md) for conventions.
-- **The `cerebe` CLI** — the free build-lifecycle tool. Its home is consolidating here;
-  follow [cerebe.ai](https://cerebe.ai) for status.
+- **Blueprint** — the public scaffold is
+  [`df-cerebe-template`](https://github.com/momentiq-ai/df-cerebe-template).
+  `@momentiq/sage-cli` is retired.
 
 ## How to contribute
 

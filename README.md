@@ -34,8 +34,8 @@ everything else.
 
 | | What it is | How you reach it |
 |---|---|---|
-| **[Cerebe Factory](#cerebe-factory--the-autonomous-code-factory)** | The autonomous code factory: a quorum of rival AI critics reviews **every commit**, and deterministic gates bind reviewed evidence to each change before it ships. | the free **`cerebe`** CLI |
-| **[Cerebe Blueprint](#cerebe-blueprint--scaffold-an-ai-native-product)** | Scaffold a production-ready agentic product (FastAPI + Next.js + LangGraph + Helm), pre-wired to the Cerebe stack and the Factory gate on commit one. | the **`sage`** CLI |
+| **[Cerebe Factory](#cerebe-factory--the-autonomous-code-factory)** | The autonomous code factory: a quorum of rival AI critics reviews **every commit**, a live factory-floor TUI watches the loop, and deterministic gates bind reviewed evidence to each change before it ships. | the free **`cerebe`** + **`cyclone`** CLIs |
+| **[Cerebe Blueprint](#cerebe-blueprint--scaffold-an-ai-native-product)** | Scaffold a production-ready agentic product (TypeScript: Bun + Hono + Svelte), pre-wired to the Cerebe stack and the Factory gate on commit one. | the public **[`df-cerebe-template`](https://github.com/momentiq-ai/df-cerebe-template)** |
 | **[Cerebe Cognitive](#cerebe-cognitive--the-engine)** | The engine: persistent memory, temporal knowledge graphs, capability-based model routing, and meta-learning — behind one hosted API. | Python / TypeScript SDK |
 
 The model is a **free tool over a paid backend**: run the lifecycle locally with the
@@ -49,14 +49,23 @@ source); Cloud is a managed commercial service.
 
 The **`cerebe`** CLI puts a **quorum of rival AI critics** — Claude, Cursor, Codex, Gemini,
 Grok — on every commit, and a pre-push gate that won't let a change ship until it's bound to
-reviewed evidence. It's **free to use**, a single static binary: no Node or Python runtime,
-and local review runs through your existing AI-app subscriptions (no API keys).
+reviewed evidence. It's **free to use**, a pair of static binaries (`cerebe` + `cyclone`):
+no Node or Python runtime, and local review runs through your existing AI-app subscriptions
+(no API keys).
+
+Current stable release: **[v8.4.0](https://github.com/momentiq-ai/cerebe/releases/tag/v8.4.0)**
+([all releases](https://github.com/momentiq-ai/cerebe/releases)).
 
 ```bash
 # Install the cerebe + cyclone binaries (checksum-verified) onto PATH — macOS/Linux
 curl -fsSL https://raw.githubusercontent.com/momentiq-ai/cerebe/main/install.sh | sh
-cerebe --version
+cerebe --version    # cerebe v8.4.0
+cyclone --version   # installed alongside
 ```
+
+Pin a version with `CEREBE_VERSION=8.4.0`. On Windows, download the `cerebe_*_windows_*.zip`
+and `cyclone_*_windows_*.zip` archives from the
+[Releases](https://github.com/momentiq-ai/cerebe/releases) page.
 
 Wire it into a repo:
 
@@ -65,10 +74,11 @@ cerebe install     # scaffold cerebe/, detect your local AI CLIs, install git ho
 cerebe doctor      # verify hooks, AI CLIs, config, and agent-context docs
 ```
 
-`cerebe install` commits a `cerebe/config.json` — your critic fleet, quorum, and gate
+`cerebe install` writes a `cerebe/config.json` — your critic fleet, quorum, and gate
 policy — and installs two git hooks:
 
-- **post-commit** runs the critic quorum **in the background**, so your commit stays instant;
+- **post-commit** runs the critic quorum **in the background**, so your commit stays instant,
+  then nudges you to `cerebe watch`;
 - **pre-push `gate-push`** blocks the push only on unresolved findings at or above your
   configured `blockingSeverities` (e.g. `blocker` / `high`). Everything below is advisory —
   so the gate always has a terminating state, not an endless wall of nits. An emergency
@@ -76,16 +86,44 @@ policy — and installs two git hooks:
 
 ```bash
 cerebe review                        # run the quorum on HEAD right now
+cerebe review --incremental          # re-review only the delta since last round
+cerebe watch                         # live factory-floor TUI for this branch
+cerebe watch --json                  # same fold, one JSON object per line (agents)
 cerebe gate-push                     # the pre-push gate
 cerebe status                        # terse verdict for a commit
 cerebe findings --range main..HEAD   # audit findings across a range
 ```
 
+**`cerebe watch`** is the factory floor. On a TTY it paints the live review loop — rounds,
+lanes, findings, platform check, dirty chip. From the primary checkout with two or more
+git worktrees it opens a root picker; Enter attaches, `p` comes back to the list. `--json`
+is the agent face of the same fold (never multiplexed with the TUI). `--here` / `--root`
+skip the picker and attach a listed worktree.
+
 Two ways drive the **same fleet** through one verdict kernel: **`cerebe review`** uses your
 local AI-app subscriptions (the dev inner loop), and **`cerebe critic`** drives them
-headlessly through vendor APIs for CI. Installed alongside, **`cyclone`** runs the
-cycle/project lifecycle — cycle-doc validation, branch-protection audit, verifiable
-objectives, and closeout proof.
+headlessly through vendor APIs for CI.
+
+Installed alongside, **`cyclone`** is the project-lifecycle CLI:
+
+```bash
+cyclone validate          # cycle-doc + planning validation
+cyclone doc               # scaffold / write / list registered doc types
+cyclone objectives        # derive and check verifiable objectives
+cyclone decisions         # author + check the decision ledger
+cyclone prove             # closeout proof for a cycle
+cyclone publish           # publish review evidence
+cyclone admit-pr          # classify a PR (plan vs code) and evaluate the plan-PR gate
+```
+
+Agents can talk to the same surface without scraping help text:
+
+```bash
+cerebe mcp                # local MCP server over stdio
+cerebe onboard --dry-run  # preview an agent-context scaffold for this repo
+cerebe skills list        # bundled Factory skills
+cerebe schemas list       # published JSON Schemas (config, evidence, artifacts)
+```
 
 > Free to use under the [Cerebe Software License](./LICENSE) — free for any use, including
 > commercial, but not open source.
@@ -94,24 +132,32 @@ objectives, and closeout proof.
 
 ## Cerebe Blueprint — scaffold an AI-native product
 
-**`sage`** scaffolds a production-ready agentic product in one command and wires it to the
-Cerebe stack and the Factory gate on commit one — no boilerplate, no glue code.
+The public scaffold is
+**[`df-cerebe-template`](https://github.com/momentiq-ai/df-cerebe-template)** — a
+TypeScript product (Bun + Hono + LangGraph.js backend, Vite + Svelte frontend) that
+runs natively and is pre-wired to Cerebe chat and the Factory gate on commit one.
 
 ```bash
-npm install -g @momentiq/sage-cli
-sage init hireflow --primary-persona employer --domain hireflow.ai
-# or one-shot, with interactive prompts:  npx @momentiq/sage-cli init hireflow
+# 1. Factory binaries first (one-time, per machine)
+curl -fsSL https://raw.githubusercontent.com/momentiq-ai/cerebe/main/install.sh | sh
+
+# 2. History-free copy of the template
+mkdir hireflow && gh api repos/momentiq-ai/df-cerebe-template/tarball/main \
+  | tar -xz --strip-components=1 -C hireflow
+cd hireflow
+bun run init -- --name "Hireflow"   # or interactive: bun run init
+bun install && bun run dev          # http://localhost:5173 — no Docker
 ```
 
 What you get on commit one:
 
-- **FastAPI** backend (async PostgreSQL, Redis) + **Next.js 14** frontend (App Router,
-  Tailwind, an `assistant-ui` chat surface)
-- a **LangGraph** agent runtime (ReAct + dynamic skill selection)
-- **Clerk** auth, **Doppler** secrets, **Helm** charts (local k3d + production GKE),
-  **OpenTelemetry** observability
-- the **Cerebe SDK** pre-installed and pointed at the engine, and the **Cerebe Factory
-  gate** pre-wired (hooks, config, CI workflow)
+- **One language, both ends** — TypeScript backend + frontend, types shared
+- **Native dev** — `bun install` → `bun run dev`; Docker/k8s stay in `deploy/`
+- **Cerebe chat** — OpenAI-compatible endpoint, memory-capable when you set a key
+- **Factory gate** — critic on every commit, pre-push gate, no extra glue
+
+The older **`@momentiq/sage-cli`** (`sage init`) scaffolder is **retired**. Do not
+install it for new work. The template above is the public path.
 
 ---
 
@@ -202,15 +248,34 @@ backend. See [cerebe.ai](https://cerebe.ai).
 > a software pipeline that runs lights-out, autonomously, behind deterministic safety gates.
 > We use the term as a description of the capability, not as a product name.
 
+## What's new in v8
+
+Shipped in the current stable **[v8.4.0](https://github.com/momentiq-ai/cerebe/releases/tag/v8.4.0)** binary
+(and the matching `cyclone`). Full notes live on the
+[Releases](https://github.com/momentiq-ai/cerebe/releases) page.
+
+| Surface | What landed |
+|---|---|
+| **`cerebe watch`** | Live factory-floor TUI: rounds, critic lanes, findings, platform chip. `--json` for agents. Root picker + attach + dirty chip when the repo has linked worktrees. |
+| **`cyclone doc`** | One verb for registered doc types (scaffold, write, list, resolve). |
+| **`cyclone objectives` / `decisions` / `prove`** | Verifiable objectives, the decision ledger, and closeout proof. |
+| **`cerebe review --incremental`** | Re-review only the delta since the last round of the same change. |
+| **`cerebe mcp` / `skills` / `schemas` / `onboard`** | Agent stdio server, bundled skills, published JSON Schemas, repo agent-context scaffold. |
+
+The installer still fetches the **latest stable** GitHub Release. Re-run `install.sh` to pick
+up a new tag.
+
 ## For AI agents
 
 Cerebe provides machine-readable documentation for AI tools:
 
 - **`/llms.txt`** — structured index of all documentation pages
 - **`/llms-full.txt`** — complete documentation content in markdown
+- **`cerebe mcp`** — the Factory surface over stdio for MCP-speaking agents
+- **`cerebe watch --json`** — the live factory floor as a stream of JSON objects
 
 If you're building with Claude Code, Cursor, or other AI-assisted tools, these endpoints let
-your tools understand the full Cerebe API surface automatically.
+your tools understand the Cerebe API and the Factory loop without scraping this README.
 
 ## Resources
 
@@ -219,8 +284,8 @@ your tools understand the full Cerebe API surface automatically.
 | Site | [cerebe.ai](https://cerebe.ai) |
 | Documentation | [cerebe.ai/docs](https://cerebe.ai/docs) |
 | Quickstart | [cerebe.ai/docs/getting-started/quickstart](https://cerebe.ai/docs/getting-started/quickstart) |
-| `cerebe` CLI (Factory) | [github.com/momentiq-ai/cerebe/releases](https://github.com/momentiq-ai/cerebe/releases) |
-| `sage` CLI (Blueprint) | [npmjs.com/package/@momentiq/sage-cli](https://www.npmjs.com/package/@momentiq/sage-cli) |
+| `cerebe` + `cyclone` (Factory) | [github.com/momentiq-ai/cerebe/releases](https://github.com/momentiq-ai/cerebe/releases) |
+| Blueprint template | [github.com/momentiq-ai/df-cerebe-template](https://github.com/momentiq-ai/df-cerebe-template) |
 | Python SDK (Cognitive) | [pypi.org/project/cerebe](https://pypi.org/project/cerebe/) |
 | TypeScript SDK (Cognitive) | [npmjs.com/package/@cerebe/sdk](https://www.npmjs.com/package/@cerebe/sdk) |
 | Sign in | [cerebe.ai/sign-in](https://cerebe.ai/sign-in) |
@@ -228,10 +293,11 @@ your tools understand the full Cerebe API surface automatically.
 
 ## License
 
-The `cerebe` CLI is **free to use** under the [Cerebe Software License](./LICENSE) — free for
-any use, including commercial, but not open source (the source is proprietary). The `sage`
-scaffolder and the Python / TypeScript SDKs are published separately under the MIT License.
-**Cerebe Cloud** is a managed commercial service under its own agreement.
+The `cerebe` and `cyclone` CLIs are **free to use** under the
+[Cerebe Software License](./LICENSE) — free for any use, including commercial, but not
+open source (the source is proprietary). The Python / TypeScript SDKs are published
+separately under the MIT License. **Cerebe Cloud** is a managed commercial service under
+its own agreement.
 
 Cerebe is operated by Momentiq AI.
 

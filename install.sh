@@ -1,12 +1,12 @@
 #!/bin/sh
-# Cerebe / Dark Factory CLI installer — downloads the released binaries from
+# Cerebe CLI installer — downloads the released binaries from
 # momentiq-ai/cerebe GitHub Releases, verifies their SHA256 checksums, and
 # installs `cerebe` + `cyclone` onto PATH. POSIX sh; macOS + Linux.
 #
 #   curl -fsSL https://raw.githubusercontent.com/momentiq-ai/cerebe/main/install.sh | sh
 #
 # Env overrides:
-#   CEREBE_VERSION=4.0.0     pin a version (default: latest release)
+#   CEREBE_VERSION=8.4.0     pin a version (default: latest stable release)
 #   CEREBE_INSTALL_DIR=DIR   install target (default: /usr/local/bin, or ~/.local/bin
 #                            if the former is not writable)
 set -eu

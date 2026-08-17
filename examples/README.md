@@ -1,6 +1,6 @@
 # Cerebe Examples
 
-Runnable examples for **Cerebe's cognitive services** — the Memory, Knowledge, Models, and Meta-Learning APIs — through the Python and TypeScript SDKs. These show the cognitive-infrastructure slice of the Cerebe family; for the build lifecycle (Blueprint / Plan / Factory) see [cerebe.ai](https://cerebe.ai).
+Runnable examples for **Cerebe's cognitive services** — the Memory, Knowledge, Models, and Meta-Learning APIs — through the Python and TypeScript SDKs. These show the cognitive-infrastructure slice of the Cerebe family; for the build lifecycle (Blueprint / Factory) see the [root README](../README.md) and [cerebe.ai](https://cerebe.ai).
 
 Each example is self-contained — clone the repo, `cd` into it, follow its README, and it works. Every example lives under `examples/<topic>/<language>/`. The language subdirectory is always present (even when only one language ships today) so that deep links stay stable as more languages are added.
 
