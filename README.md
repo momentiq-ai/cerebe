@@ -5,8 +5,8 @@
 <h1 align="center">Cerebe</h1>
 
 <p align="center">
-  <strong>The AI-native software company — scaffold, build, and ship, on one cognitive stack.</strong><br/>
-  Cerebe is the house brand for the whole family: the build lifecycle and the cognitive infrastructure it runs on.
+  <strong>AI-native software factory — scaffold, build, and ship, on one cognitive stack.</strong><br/>
+  Cerebe is the AI native build lifecycle and the cognitive infrastructure.
 </p>
 
 <p align="center">
@@ -22,11 +22,9 @@
 
 ## What is Cerebe?
 
-Cerebe is one brand over an AI-native software company. It spans the arc of building
-software — scaffold a project, build it behind a quorum of AI critics, and ship it behind
-deterministic safety gates — and the cognitive infrastructure that arc runs on. The name
-is meant to work the way Docker's does: the bare word for the free tool, a modifier for
-everything else.
+Cerebe spans the arc of building software — scaffold a project, 
+build it behind a quorum of AI critics, and ship it behind
+deterministic safety gates — and the cognitive infrastructure that arc runs on.
 
 **One workflow, three tools you can use today:**
 
