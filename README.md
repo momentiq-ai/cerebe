@@ -51,17 +51,17 @@ reviewed evidence. It's **free to use**, a pair of static binaries (`cerebe` + `
 no Node or Python runtime, and local review runs through your existing AI-app subscriptions
 (no API keys).
 
-Current stable release: **[v8.4.0](https://github.com/momentiq-ai/cerebe/releases/tag/v8.4.0)**
+Current stable release: **[v8.4.1](https://github.com/momentiq-ai/cerebe/releases/tag/v8.4.1)**
 ([all releases](https://github.com/momentiq-ai/cerebe/releases)).
 
 ```bash
 # Install the cerebe + cyclone binaries (checksum-verified) onto PATH — macOS/Linux
 curl -fsSL https://raw.githubusercontent.com/momentiq-ai/cerebe/main/install.sh | sh
-cerebe --version    # cerebe v8.4.0
+cerebe --version    # cerebe v8.4.1
 cyclone --version   # installed alongside
 ```
 
-Pin a version with `CEREBE_VERSION=8.4.0`. On Windows, download the `cerebe_*_windows_*.zip`
+Pin a version with `CEREBE_VERSION=8.4.1`. On Windows, download the `cerebe_*_windows_*.zip`
 and `cyclone_*_windows_*.zip` archives from the
 [Releases](https://github.com/momentiq-ai/cerebe/releases) page.
 
@@ -248,13 +248,13 @@ backend. See [cerebe.ai](https://cerebe.ai).
 
 ## What's new in v8
 
-Shipped in the current stable **[v8.4.0](https://github.com/momentiq-ai/cerebe/releases/tag/v8.4.0)** binary
+Shipped in the current stable **[v8.4.1](https://github.com/momentiq-ai/cerebe/releases/tag/v8.4.1)** binary
 (and the matching `cyclone`). Full notes live on the
 [Releases](https://github.com/momentiq-ai/cerebe/releases) page.
 
 | Surface | What landed |
 |---|---|
-| **`cerebe watch`** | Live factory-floor TUI: rounds, critic lanes, findings, platform chip. `--json` for agents. Root picker + attach + dirty chip when the repo has linked worktrees. |
+| **`cerebe watch`** | Live factory-floor TUI: rounds, critic lanes, findings, platform chip. `--json` for agents. Root picker + attach + dirty chip. **v8.4.1:** on-screen live keys, inverted selected row, picker opens without blocking on a full worktree scan. |
 | **`cyclone doc`** | One verb for registered doc types (scaffold, write, list, resolve). |
 | **`cyclone objectives` / `decisions` / `prove`** | Verifiable objectives, the decision ledger, and closeout proof. |
 | **`cerebe review --incremental`** | Re-review only the delta since the last round of the same change. |

@@ -6,7 +6,7 @@
 #   curl -fsSL https://raw.githubusercontent.com/momentiq-ai/cerebe/main/install.sh | sh
 #
 # Env overrides:
-#   CEREBE_VERSION=8.4.0     pin a version (default: latest stable release)
+#   CEREBE_VERSION=8.4.1     pin a version (default: latest stable release)
 #   CEREBE_INSTALL_DIR=DIR   install target (default: /usr/local/bin, or ~/.local/bin
 #                            if the former is not writable)
 set -eu
