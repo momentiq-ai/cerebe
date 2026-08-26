@@ -1,0 +1,547 @@
+{
+  "$defs": {
+    "agents": {
+      "additionalProperties": false,
+      "properties": {
+        "chiefEngineer": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "behavior": {
+      "additionalProperties": false,
+      "properties": {
+        "autonomy": {
+          "enum": [
+            "plan",
+            "ask",
+            "proceed-until-blocked",
+            "auto"
+          ],
+          "type": "string"
+        },
+        "doctrine": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "escalation": {
+          "$ref": "#/$defs/escalation"
+        },
+        "parkingLot": {
+          "$ref": "#/$defs/parkingLot"
+        },
+        "thrash": {
+          "$ref": "#/$defs/thrash"
+        }
+      },
+      "type": "object"
+    },
+    "budgets": {
+      "additionalProperties": false,
+      "properties": {
+        "iterations": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "wallClockMinutes": {
+          "minimum": 0,
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "criticOverride": {
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "model"
+      ],
+      "type": "object"
+    },
+    "criticProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "critics": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "fleet": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "quorum": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "criticsBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "fleet": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "overrides": {
+          "additionalProperties": {
+            "$ref": "#/$defs/criticOverride"
+          },
+          "type": "object"
+        },
+        "profiles": {
+          "additionalProperties": {
+            "$ref": "#/$defs/criticProfile"
+          },
+          "type": "object"
+        },
+        "quorum": {
+          "enum": [
+            "min-complete",
+            "min-complete-quorum",
+            "block-if-any"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "docs": {
+      "additionalProperties": false,
+      "properties": {
+        "adrDir": {
+          "type": "string"
+        },
+        "cycleDocsDir": {
+          "type": "string"
+        },
+        "manifesto": {
+          "type": "string"
+        },
+        "prdDir": {
+          "type": "string"
+        },
+        "rfcDir": {
+          "type": "string"
+        },
+        "roots": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "escalation": {
+      "additionalProperties": false,
+      "properties": {
+        "notify": {
+          "type": "string"
+        },
+        "onTimeout": {
+          "enum": [
+            "safe-default",
+            "park"
+          ],
+          "type": "string"
+        },
+        "timeoutMinutes": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "hooks": {
+      "additionalProperties": false,
+      "properties": {
+        "gate": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "preToolUse": {
+          "type": "string"
+        },
+        "sessionStart": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "loopPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "budgets": {
+          "$ref": "#/$defs/budgets"
+        },
+        "escalation": {
+          "$ref": "#/$defs/escalation"
+        },
+        "harness": {
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "drive",
+            "terminate"
+          ],
+          "type": "string"
+        },
+        "parkingLot": {
+          "$ref": "#/$defs/parkingLot"
+        },
+        "thrash": {
+          "$ref": "#/$defs/thrash"
+        },
+        "timeboxes": {
+          "$ref": "#/$defs/timeboxes"
+        }
+      },
+      "type": "object"
+    },
+    "mcp": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "modeConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "dependencyPolicy": {
+          "enum": [
+            "none",
+            "escalate"
+          ],
+          "type": "string"
+        },
+        "designSystem": {
+          "$ref": "#/$defs/modeDesignSystem"
+        },
+        "devServer": {
+          "$ref": "#/$defs/modeDevServer"
+        },
+        "diffBudget": {
+          "$ref": "#/$defs/modeDiffBudget"
+        },
+        "evidence": {
+          "$ref": "#/$defs/modeEvidenceConfig"
+        },
+        "protectedPaths": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "writeScopes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "modeDesignSystem": {
+      "additionalProperties": false,
+      "properties": {
+        "designMd": {
+          "type": "string"
+        },
+        "storybookUrl": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "modeDevServer": {
+      "additionalProperties": false,
+      "properties": {
+        "command": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "modeDiffBudget": {
+      "additionalProperties": false,
+      "properties": {
+        "maxFiles": {
+          "maximum": 1000000,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "maxLines": {
+          "maximum": 1000000,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "modeEvidenceConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "visual": {
+          "enum": [
+            "required",
+            "off"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "objectives": {
+      "additionalProperties": false,
+      "properties": {
+        "loop": {
+          "$ref": "#/$defs/loopPolicy"
+        }
+      },
+      "type": "object"
+    },
+    "parkingLot": {
+      "additionalProperties": false,
+      "properties": {
+        "budgetMinutes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "label": {
+          "type": "string"
+        },
+        "repo": {
+          "pattern": "^[^/\\s]+/[^/\\s]+$",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "policy": {
+      "additionalProperties": false,
+      "properties": {
+        "locks": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "qualityGatesExtras": {
+      "additionalProperties": false,
+      "properties": {
+        "apiTypes": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "repo": {
+      "additionalProperties": false,
+      "properties": {
+        "displayName": {
+          "type": "string"
+        },
+        "ownerRepo": {
+          "pattern": "^[^/\\s]+/[^/\\s]+$",
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "skill": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "thrash": {
+      "additionalProperties": false,
+      "properties": {
+        "advisorAtRepeat": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "iterationCeiling": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "timeboxes": {
+      "additionalProperties": false,
+      "properties": {
+        "perObjectiveMinutes": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "preexistingBlockerMinutes": {
+          "minimum": 0,
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "tools": {
+      "additionalProperties": false,
+      "properties": {
+        "deny": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "$id": "https://schemas.dark-factory.dev/darkfactory/v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Unified darkfactory.yaml — generated from cli/dfconfig.Document. Closed-world: unknown keys are rejected.",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "agentCommitterOrg": {
+      "type": "string"
+    },
+    "agents": {
+      "$ref": "#/$defs/agents"
+    },
+    "behavior": {
+      "$ref": "#/$defs/behavior"
+    },
+    "critics": {
+      "$ref": "#/$defs/criticsBlock"
+    },
+    "docs": {
+      "$ref": "#/$defs/docs"
+    },
+    "extends": {
+      "oneOf": [
+        {
+          "minLength": 1,
+          "pattern": "^[^/\\s]+/[^/\\s@]+@[0-9a-fA-F]{40}:[A-Za-z0-9][A-Za-z0-9._/-]*$",
+          "type": "string"
+        },
+        {
+          "items": {
+            "minLength": 1,
+            "pattern": "^[^/\\s]+/[^/\\s@]+@[0-9a-fA-F]{40}:[A-Za-z0-9][A-Za-z0-9._/-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      ]
+    },
+    "handoffRepos": {
+      "items": {
+        "minLength": 1,
+        "pattern": "^[^/\\s]+/[^/\\s]+$",
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "hooks": {
+      "$ref": "#/$defs/hooks"
+    },
+    "loop": {
+      "$ref": "#/$defs/loopPolicy"
+    },
+    "mcp": {
+      "$ref": "#/$defs/mcp"
+    },
+    "modes": {
+      "additionalProperties": {
+        "$ref": "#/$defs/modeConfig"
+      },
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9-]*$"
+      },
+      "type": "object"
+    },
+    "objectives": {
+      "$ref": "#/$defs/objectives"
+    },
+    "policy": {
+      "$ref": "#/$defs/policy"
+    },
+    "qualityGates": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "qualityGatesExtras": {
+      "$ref": "#/$defs/qualityGatesExtras"
+    },
+    "repo": {
+      "$ref": "#/$defs/repo"
+    },
+    "schemaVersion": {
+      "type": "integer"
+    },
+    "skills": {
+      "additionalProperties": {
+        "$ref": "#/$defs/skill"
+      },
+      "type": "object"
+    },
+    "tools": {
+      "$ref": "#/$defs/tools"
+    },
+    "worktreeRoot": {
+      "type": "string"
+    }
+  },
+  "title": "Dark Factory consumer config (darkfactory.yaml)",
+  "type": "object"
+}
