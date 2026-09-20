@@ -104,12 +104,17 @@ if ! command -v git >/dev/null 2>&1 \
   printf 'Re-run the same curl from the repo you want adopted.\n'
   exit 0
 fi
-if [ -f "$ORIG_CWD/cerebe/config.json" ]; then
+GIT_ROOT=$(git -C "$ORIG_CWD" rev-parse --show-toplevel) || err "could not resolve git root"
+# Hooks resolve CEREBE_BIN before PATH. Export the just-installed binary so
+# the next commit works even if $DIR is not on this shell's PATH yet.
+export CEREBE_BIN="$DIR/cerebe"
+export PATH="$DIR:$PATH"
+if [ -f "$GIT_ROOT/cerebe/config.json" ]; then
   log "Configuring this repo (cerebe init — already adopted)."
-  (cd "$ORIG_CWD" && "$DIR/cerebe" init)
+  (cd "$GIT_ROOT" && "$DIR/cerebe" init)
 else
   log "Configuring this repo (cerebe install — empty fleet, no local critics)."
-  (cd "$ORIG_CWD" && "$DIR/cerebe" install)
+  (cd "$GIT_ROOT" && "$DIR/cerebe" install)
 fi
 # doctor is the proof the one-liner finished; a blocking row fails the install.
-(cd "$ORIG_CWD" && "$DIR/cerebe" doctor)
+(cd "$GIT_ROOT" && "$DIR/cerebe" doctor)
