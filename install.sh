@@ -1,19 +1,26 @@
 #!/bin/sh
-# Cerebe CLI installer — downloads the released binaries from
-# momentiq-ai/cerebe GitHub Releases, verifies their SHA256 checksums, and
-# installs `cerebe` + `cyclone` onto PATH. POSIX sh; macOS + Linux.
+# Cerebe CLI installer — checksum-verified binaries onto PATH, then (when
+# this is a laptop in a git repo) configure that repo. One line:
 #
 #   curl -fsSL https://raw.githubusercontent.com/momentiq-ai/cerebe/main/install.sh | sh
+#
+# Run it from the repo you want adopted. CI (`CI` set) and CEREBE_SKIP_REPO=1
+# stay binaries-only. No prompt — curl|sh has no stdin. No local critics.
 #
 # Env overrides:
 #   CEREBE_VERSION=8.4.1     pin a version (default: latest stable release)
 #   CEREBE_INSTALL_DIR=DIR   install target (default: /usr/local/bin, or ~/.local/bin
 #                            if the former is not writable)
+#   CEREBE_SKIP_REPO=1       binaries only, even inside a git repo
 set -eu
 
 REPO="momentiq-ai/cerebe"
 BINARIES="cerebe cyclone"
 VERSION="${CEREBE_VERSION:-}"
+VERSION="${VERSION#v}"
+# Capture the caller's directory before we cd into the download temp.
+# That is the repo the one-liner is supposed to configure.
+ORIG_CWD=$(pwd)
 
 log()  { printf '  %s\n' "$*"; }
 err()  { printf 'cerebe-install: %s\n' "$*" >&2; exit 1; }
@@ -82,5 +89,27 @@ for bin in $BINARIES; do
 done
 
 printf '\nInstalled: %s → %s\n' "$BINARIES" "$DIR"
-printf 'Verify:    cerebe --version   (expect v%s)\n' "$VERSION"
+"$DIR/cerebe" --version || err "just-installed cerebe did not run"
 case ":$PATH:" in *":$DIR:"*) : ;; *) printf 'PATH:      add %s to your PATH\n' "$DIR";; esac
+
+# --- this repo (laptop only) ----------------------------------------------
+# CI reuses this script for binaries. A prompt cannot work on curl|sh.
+if [ -n "${CI:-}" ] || [ -n "${CEREBE_SKIP_REPO:-}" ]; then
+  log "Skipping repo setup (CI or CEREBE_SKIP_REPO)."
+  exit 0
+fi
+if ! command -v git >/dev/null 2>&1 \
+   || ! git -C "$ORIG_CWD" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  printf '\nNot a git repository — binaries only.\n'
+  printf 'Re-run the same curl from the repo you want adopted.\n'
+  exit 0
+fi
+if [ -f "$ORIG_CWD/cerebe/config.json" ]; then
+  log "Configuring this repo (cerebe init — already adopted)."
+  (cd "$ORIG_CWD" && "$DIR/cerebe" init)
+else
+  log "Configuring this repo (cerebe install — empty fleet, no local critics)."
+  (cd "$ORIG_CWD" && "$DIR/cerebe" install)
+fi
+# doctor is the proof the one-liner finished; a blocking row fails the install.
+(cd "$ORIG_CWD" && "$DIR/cerebe" doctor)
