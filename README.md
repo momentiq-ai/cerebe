@@ -30,7 +30,7 @@ deterministic safety gates — and the cognitive infrastructure that arc runs on
 
 | | What it is | How you reach it |
 |---|---|---|
-| **[Cerebe Factory](#cerebe-factory--the-autonomous-code-factory)** | The software-factory CLI: install a compiled binary, scaffold a repo, optionally enable a local critic fleet, and (separately) use the hosted GitHub App on pull requests. | `install.sh` then `cerebe install` — **not** npm or pip |
+| **[Cerebe Factory](#cerebe-factory--the-autonomous-code-factory)** | The software-factory CLI: one curl installs the binary and configures this repo (empty local fleet). Hosted PR review is the GitHub App, separately. | `install.sh` from the repo — **not** npm or pip |
 | **[Cerebe Blueprint](#cerebe-blueprint--scaffold-an-ai-native-product)** | Scaffold a production-ready agentic product (TypeScript: Bun + Hono + Svelte), pre-wired to the Cerebe stack and the Factory CLI. | the public **[`df-cerebe-template`](https://github.com/momentiq-ai/df-cerebe-template)** |
 | **[Cerebe Cognitive](#cerebe-cognitive--the-engine)** | A **different product**: persistent memory, temporal knowledge graphs, capability-based model routing, and meta-learning — behind one hosted API. | Python / TypeScript SDK (`pip install cerebe` / `npm i @cerebe/sdk`) |
 
@@ -49,10 +49,8 @@ The Factory CLI is the compiled **`cerebe`** + **`cyclone`** binaries. It is **n
 npm CLI). Install the Factory binary from this repo:
 
 ```bash
-# macOS / Linux — checksum-verified binaries onto PATH
+# From the repo you want adopted. Binaries + this checkout. No local critics.
 curl -fsSL https://raw.githubusercontent.com/momentiq-ai/cerebe/main/install.sh | sh
-cerebe --version
-cerebe install
 ```
 
 Current stable release: **[v8.11.0](https://github.com/momentiq-ai/cerebe/releases/tag/v8.11.0)**
@@ -69,7 +67,7 @@ Current stable release: **[v8.11.0](https://github.com/momentiq-ai/cerebe/releas
 | `npm i @momentiq/dark-factory-cli` | Deprecated frozen npm CLI. Do not use it. |
 | `npm i @cerebe/cli` | Redirect stub: prints the `install.sh` one-liner and **exits 1** |
 
-`cerebe install` writes `cerebe/config.json`, `darkfactory.yaml`, `AGENTS.md`, and
+That one line writes `cerebe/config.json`, `darkfactory.yaml`, `AGENTS.md`, and
 `CLAUDE.md`, and arms git hooks. It does **not** auto-enable a local critic fleet.
 Detected vendor CLIs are printed as a suggestion only. Day one is **0 critics,
 quorum 0**. `cerebe review` and `cerebe gate-push` **skip** when the fleet is empty —
@@ -165,7 +163,7 @@ What you get on commit one:
 - **One language, both ends** — TypeScript backend + frontend, types shared
 - **Native dev** — `bun install` → `bun run dev`; Docker/k8s stay in `deploy/`
 - **Cerebe chat** — OpenAI-compatible endpoint, memory-capable when you set a key
-- **Factory CLI** — `cerebe install` scaffolds the repo; local review stays off until `cerebe model add`
+- **Factory CLI** — the one-liner scaffolds the repo; local review stays off until `cerebe model add`
 
 The older **`@momentiq/sage-cli`** (`sage init`) scaffolder is **retired**. Do not
 install it for new work. The template above is the public path.
@@ -286,7 +284,6 @@ up a new tag.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/momentiq-ai/cerebe/main/install.sh | sh
-cerebe --version && cerebe install
 ```
 
 Then optionally `cerebe model add cursor` (or `claude` / `codex` / `gemini` / `kimi`).
