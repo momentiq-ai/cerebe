@@ -9,9 +9,10 @@
 #
 # Env overrides:
 #   CEREBE_VERSION=8.4.1     pin a version (default: latest stable release)
-#   CEREBE_INSTALL_DIR=DIR   install target (default: /usr/local/bin, or ~/.local/bin
-#                            if the former is not writable)
-#   CEREBE_SKIP_REPO=1       binaries only, even inside a git repo
+#   CEREBE_INSTALL_DIR=DIR   install target AND binaries-only (CI / soak).
+#                            Default /usr/local/bin or ~/.local/bin also
+#                            configures this git repo.
+#   CEREBE_SKIP_REPO=1       binaries only, even with the default install dir
 set -eu
 
 REPO="momentiq-ai/cerebe"
@@ -93,9 +94,11 @@ printf '\nInstalled: %s → %s\n' "$BINARIES" "$DIR"
 case ":$PATH:" in *":$DIR:"*) : ;; *) printf 'PATH:      add %s to your PATH\n' "$DIR";; esac
 
 # --- this repo (laptop only) ----------------------------------------------
-# CI reuses this script for binaries. A prompt cannot work on curl|sh.
-if [ -n "${CI:-}" ] || [ -n "${CEREBE_SKIP_REPO:-}" ]; then
-  log "Skipping repo setup (CI or CEREBE_SKIP_REPO)."
+# Reusable workflows run this script under env -i with CEREBE_INSTALL_DIR
+# set to $RUNNER_TEMP. That isolated dir is the CI signal — not $CI.
+# A prompt cannot work on curl|sh.
+if [ -n "${CEREBE_INSTALL_DIR:-}" ] || [ -n "${CI:-}" ] || [ -n "${CEREBE_SKIP_REPO:-}" ]; then
+  log "Skipping repo setup (isolated install dir or CI)."
   exit 0
 fi
 if ! command -v git >/dev/null 2>&1 \
